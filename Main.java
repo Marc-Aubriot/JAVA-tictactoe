@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
@@ -17,3 +18,6 @@ public class Main {
     }
 
 }
+=======
+
+>>>>>>> c218eb9 (test 3)
