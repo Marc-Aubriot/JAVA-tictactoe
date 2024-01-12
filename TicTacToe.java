@@ -6,7 +6,7 @@ import javax.swing.*;
 public class TicTacToe implements ActionListener{
 
 	Random random = new Random();
-	JFrame frame = new JFrame();
+	JFrame frame2 = new JFrame();
 	JPanel title_panel = new JPanel();
 	JPanel button_panel = new JPanel();
 	JLabel textfield = new JLabel();
@@ -15,11 +15,11 @@ public class TicTacToe implements ActionListener{
 
 	TicTacToe(){
 		
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(800,800);
-		frame.getContentPane().setBackground(new Color(50,50,50));
-		frame.setLayout(new BorderLayout());
-		frame.setVisible(true);
+		frame2.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frame2.setSize(800,800);
+		frame2.getContentPane().setBackground(new Color(50,50,50));
+		frame2.setLayout(new BorderLayout());
+		frame2.setVisible(true);
 		
 		textfield.setBackground(new Color(25,25,25));
 		textfield.setForeground(new Color(25,255,0));
@@ -43,8 +43,8 @@ public class TicTacToe implements ActionListener{
 		}
 		
 		title_panel.add(textfield);
-		frame.add(title_panel,BorderLayout.NORTH);
-		frame.add(button_panel);
+		frame2.add(title_panel,BorderLayout.NORTH);
+		frame2.add(button_panel);
 		
 		firstTurn();
 	}
@@ -81,7 +81,6 @@ public class TicTacToe implements ActionListener{
 		try {
 			Thread.sleep(2000);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
