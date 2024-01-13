@@ -54,10 +54,13 @@ public class GameFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == buttons[0]) {
+            frame.dispose();
             new Sudoku();
         } else if (e.getSource() == buttons[1]) {
-            new Snake();
+            frame.dispose();
+            new SnakeGameFrame();
         } else if (e.getSource() == buttons[2]) {
+            frame.dispose();
             new TicTacToe();
         }
     }
