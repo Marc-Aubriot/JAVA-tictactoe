@@ -1,7 +1,7 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
-
+import java.util.Random;
 import javax.swing.*;
 
 public class Sudoku implements ActionListener {
@@ -11,6 +11,10 @@ public class Sudoku implements ActionListener {
     JFrame frame = new JFrame();
     JPanel panel = new JPanel();
     JButton[][] buttons = new JButton[9][9];
+
+    // var
+    int[][] solution_grid = new int[9][9];
+    boolean[][] logic_grid = new boolean[9][9];
 
     Sudoku() {
 
@@ -22,12 +26,14 @@ public class Sudoku implements ActionListener {
         frame.setTitle("Sudoku JAVA");
         
         // créer un layout de 81 boutons correspondant à la grille du sudoku
+        // TODO: faire en sorte que les subgrid soient plus visible
         panel.setLayout(new GridLayout(9,9));
 
         int[][] sudoku_grid = generateSudoku();
-        drawGrid(sudoku_grid);
-        printSudoku(sudoku_grid);
-        
+        int[][] playable_grid = makeItPlayable(sudoku_grid);
+
+        printSudoku(playable_grid);
+        drawGrid(playable_grid);
         frame.add(panel);
     }
 
@@ -36,6 +42,12 @@ public class Sudoku implements ActionListener {
             for (int y=0; y<buttons[x].length; y++) {
                 if (e.getSource() == buttons[x][y]) {
                   
+                    // TODO: pouvoir rentrer un nouveau chiffre
+                    if (logic_grid[x][y] == false) {
+                        System.out.println("this button should be rewritable");
+                    } else {
+                        System.out.println("this button can't be rewrited");
+                    }
                     
                 }
             }
@@ -48,6 +60,44 @@ public class Sudoku implements ActionListener {
         populateGrid(sudoku_grid);
         return sudoku_grid;
     }
+
+    // méthode qui efface un nombre de case en fonction de la difficulté
+    public int[][] makeItPlayable(int[][] sudoku_grid) {
+        // TODO: il doit y avoir minimum 2 case par subgrid pour que ce soit jouable
+
+        //boolean[][] logic_grid = new boolean[9][9];
+        int[][] playable_grid = new int[9][9];
+        int difficulty = 33;
+
+        // on passe un nombre de case égale à la difficulté à true, elles ne seront pas rewritable
+        for (int i=0; i<difficulty; i++) { 
+            int random_x = random.nextInt(9);
+            int random_y = random.nextInt(9);
+
+            if (logic_grid[random_x][random_y] == true) { // si la case est déjà marquée comme true, recommence l'itération; sinon marque true
+                i = i-1;
+                continue;
+            } else {
+                logic_grid[random_x][random_y] = true;
+            }
+        }
+
+        // on itère la grille playable et la grille logic, si logic = false alors playable est vide et rewritable
+        // si true, alors playable possède est chiffre est n'est pas rewritable
+        for (int row=0; row<9; row++) {
+            for (int col=0; col<9; col++) {
+                if (logic_grid[row][col] == true) {
+                    playable_grid[row][col] = sudoku_grid[row][col];
+                }
+            }
+        }
+
+        return playable_grid;    
+    }
+
+    // TODO: méthode qui check si la grille de sudoku une fois finie est valide
+
+    // TODO: méthode qui déclare la victoire du joueur si la grille est valide
 
     // rempli la grille de sudoku avec une méthode d'incrémentation et de backtracking (recursive)
     public static boolean populateGrid(int[][] sudoku_grid) {
@@ -136,8 +186,8 @@ public class Sudoku implements ActionListener {
         return false;
     }
 
-    // prépare le tableau logique
-    public void drawGrid(int[][] sudoku_grid) {
+    // ajoute les boutons dans jpanel et dessine la grille de sudoku dans jframe
+    public void drawGrid(int[][] playable_grid) {
         
         for (int x=0; x<9; x++) {
 
@@ -149,10 +199,12 @@ public class Sudoku implements ActionListener {
                 buttons[x][y].setFont(new Font("MV Boli",Font.BOLD,20));
                 buttons[x][y].setFocusable(false);
                 buttons[x][y].addActionListener(this);
-                buttons[x][y].setText(String.valueOf(sudoku_grid[x][y]));
 
-                if (sudoku_grid[x][y] == 0) {
-                    buttons[x][y].setBackground(new Color(255,0,0));
+                if (playable_grid[x][y] == 0) {
+                    buttons[x][y].setText(" ");
+                    buttons[x][y].setBackground(new Color(200,200,255));
+                } else {
+                    buttons[x][y].setText(String.valueOf(playable_grid[x][y]));
                 }
             }        
         }
