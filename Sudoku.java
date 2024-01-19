@@ -68,11 +68,11 @@ public class Sudoku implements ActionListener {
                                 return true;
                             }
 
-                            sudoku_grid[row][col] = 0;
+                            sudoku_grid[row][col] = 0; // réinitialise si l'instance à renvoyer false
                         }
                     }
                     
-                    return false;
+                    return false; // pas de chiffre valide, renvoit false
                 }
             }
         }
